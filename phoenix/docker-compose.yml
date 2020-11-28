@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  my-app:
+    build: .
+    volumes:
+      - deps:/my-app/deps
+      - ./:/my-app
+    environment:
+      POSTGRES_HOST: postgres
+    ports:
+      - 4000:4000
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /var/lib/postgresql/data/pgdata
+    restart: always
+    volumes:
+      - my-app-postgres:/var/lib/postgresql/data/pgdata
+
+volumes:
+  my-app-postgres:
+  deps:
